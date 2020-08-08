@@ -18,9 +18,10 @@ img = cv2.imread(sample)
 # img = cv2.resize(img, (512,768), interpolation = cv2.INTER_AREA)
 im, start, end = watermark_detector(img, cropped_gx, cropped_gy)
 
-print("start: %s, end: %s\n" % (start, end))
-plt.imshow(im)
-plt.show()
+# View the watermark detection
+#print("start: %s, end: %s\n" % (start, end))
+#plt.imshow(im)
+#plt.show()
 
 # We are done with watermark estimation
 # W_m is the cropped watermark
