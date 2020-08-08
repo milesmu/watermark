@@ -98,7 +98,7 @@ def fotolia_scrape(directory, minVal=137840645, n_images=100):
 	thread_list = []
 
 	# start threads
-	for index in xrange(n_images):
+	for index in range(n_images):
 		th = Thread(target=_get_image_url_fotolia, args=(base_url, minVal, directory, index))
 		thread_list.append(th)
 		th.start()

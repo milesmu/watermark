@@ -4,15 +4,20 @@ import os
 import scipy
 from scipy.sparse import *
 from scipy.sparse import linalg
-from estimate_watermark import *
-from closed_form_matting import *
+from src.estimate_watermark import *
+from src.closed_form_matting import *
 from numpy import nan, isnan
 
 def get_cropped_images(foldername, num_images, start, end, shape):
     '''
     This is the part where we get all the images, extract their parts, and then add it to our matrix
     '''
+    #images_cropped = np.zeros((num_images,) + shape)
     images_cropped = np.zeros((num_images,) + shape)
+    print(shape)
+    print(images_cropped.shape)
+    print(start)
+    print(end)
     # get images
     # Store all the watermarked images
     # start, and end are already stored
@@ -26,10 +31,12 @@ def get_cropped_images(foldername, num_images, start, end, shape):
 
         for file in files:
             _img = cv2.imread(os.sep.join([r, file]))
+            # TODO: same image size
+            _img = cv2.resize(_img, (512,768), interpolation = cv2.INTER_AREA)
             if _img is not None:
                 # estimate the watermark part
                 image_paths.append(os.sep.join([r, file]))
-                _img = _img[_s[0]:(_s[0]+_e[0]), _s[1]:(_s[1]+_e[1]), :]
+                _img = _img[int(_s[0]):int(_s[0]+_e[0]), int(_s[1]):int(_s[1]+_e[1]), :]
                 # add to list images
                 images_cropped[index, :, :, :] = _img
                 index+=1
@@ -127,7 +134,7 @@ def estimate_normalized_alpha(J, W_m, num_images=30, threshold=170, invert=False
 
     print("Estimating normalized alpha using %d images."%(num_images))
     # for all images, calculate alpha
-    for idx in xrange(num_images):
+    for idx in range(num_images):
         imgcopy = thr
         alph = closed_form_matte(J[idx], imgcopy)
         alpha[idx] = alph
@@ -141,7 +148,7 @@ def estimate_blend_factor(J, W_m, alph, threshold=0.01*255):
     gx_jm = np.zeros(J.shape)
     gy_jm = np.zeros(J.shape)
 
-    for i in xrange(K):
+    for i in range(K):
         gx_jm[i] = cv2.Sobel(Jm[i], cv2.CV_64F, 1, 0, 3)
         gy_jm[i] = cv2.Sobel(Jm[i], cv2.CV_64F, 0, 1, 3)
 
@@ -153,7 +160,7 @@ def estimate_blend_factor(J, W_m, alph, threshold=0.01*255):
     estIk_grad = np.sqrt(gx_estIk**2 + gy_estIk**2)
 
     C = []
-    for i in xrange(3):
+    for i in range(3):
         c_i = np.sum(Jm_grad[:,:,:,i]*estIk_grad[:,:,i])/np.sum(np.square(estIk_grad[:,:,i]))/K
         print(c_i)
         C.append(c_i)
@@ -181,7 +188,7 @@ def solve_images(J, W_m, alpha, W_init, gamma=1, beta=1, lambda_w=0.005, lambda_
     sobely = get_ySobel_matrix(m, n, p)
     Ik = np.zeros(J.shape)
     Wk = np.zeros(J.shape)
-    for i in xrange(K):
+    for i in range(K):
         Ik[i] = J[i] - W_m
         Wk[i] = W_init.copy()
 
@@ -189,7 +196,7 @@ def solve_images(J, W_m, alpha, W_init, gamma=1, beta=1, lambda_w=0.005, lambda_
     W = W_init.copy()
 
     # Iterations
-    for _ in xrange(iters):
+    for _ in range(iters):
 
         print("------------------------------------")
         print("Iteration: %d"%(_))
@@ -208,7 +215,7 @@ def solve_images(J, W_m, alpha, W_init, gamma=1, beta=1, lambda_w=0.005, lambda_
         alpha_diag = diags(alpha.reshape(-1))
         alpha_bar_diag = diags((1-alpha).reshape(-1))
 
-        for i in xrange(K):
+        for i in range(K):
             # prep vars
             Wkx = cv2.Sobel(Wk[i], cv2.CV_64F, 1, 0, 3)
             Wky = cv2.Sobel(Wk[i], cv2.CV_64F, 0, 1, 3)
@@ -303,3 +310,4 @@ def changeContrastImage(J, I):
 
     I_m = cJ1 + (I-cI1)/(cI2-cI1)*(cJ2-cJ1)
     return I_m
+
