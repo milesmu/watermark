@@ -12,12 +12,8 @@ def get_cropped_images(foldername, num_images, start, end, shape):
     '''
     This is the part where we get all the images, extract their parts, and then add it to our matrix
     '''
-    #images_cropped = np.zeros((num_images,) + shape)
     images_cropped = np.zeros((num_images,) + shape)
-    print(shape)
-    print(images_cropped.shape)
-    print(start)
-    print(end)
+
     # get images
     # Store all the watermarked images
     # start, and end are already stored
@@ -117,7 +113,7 @@ def get_xSobel_matrix(m, n, p):
     return coo_matrix((vals, (i, j)), shape=(size, size))
 
 # get estimated normalized alpha matte
-def estimate_normalized_alpha(J, W_m, num_images=30, threshold=170, invert=False, adaptive=False, adaptive_threshold=21, c2=10):
+def estimate_normalized_alpha(J, W_m, num_images, threshold=170, invert=False, adaptive=False, adaptive_threshold=21, c2=10):
     _Wm = (255*PlotImage(np.average(W_m, axis=2))).astype(np.uint8)
     if adaptive:
         thr = cv2.adaptiveThreshold(_Wm, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, adaptive_threshold, c2)
