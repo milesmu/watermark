@@ -2,7 +2,8 @@
 # --encoding: utf8 --
 from src import *
 
-folder = "/Users/swei/Downloads/dataset/girls/艾儿521/[秀人XIUREN] 2017.12.22 NO.877 艾儿521/test/"
+# make sure all the images must be same size
+folder = "./images/fotolia"
 gx, gy, gxlist, gylist = estimate_watermark(folder)
 
 # est = poisson_reconstruct(gx, gy, np.zeros(gx.shape)[:,:,0])
@@ -10,9 +11,11 @@ cropped_gx, cropped_gy = crop_watermark(gx, gy)
 W_m = poisson_reconstruct(cropped_gx, cropped_gy)
 
 # random photo
-sample = "/Users/swei/Downloads/dataset/girls/艾儿521/[秀人XIUREN] 2017.12.22 NO.877 艾儿521/test/29024941-32-2221.jpg"
+sample = "images/fotolia/fotolia_137840668.jpg"
 img = cv2.imread(sample)
-img = cv2.resize(img, (512,768), interpolation = cv2.INTER_AREA)
+
+# TODO: images size must be same
+# img = cv2.resize(img, (512,768), interpolation = cv2.INTER_AREA)
 im, start, end = watermark_detector(img, cropped_gx, cropped_gy)
 
 print("start: %s, end: %s\n" % (start, end))

@@ -1,3 +1,14 @@
+## Alpha blended watermark removal
+
+This is a fork of "automatic-watermark-detection", I fixed the errors for Python3, and clean up the codes.
+
+Note: 
+It only effective for alpla blended watermark, poor with opaque watermark.
+To play with the code, please make sure you have multiple images with same watermark at same position.
+If you still think this is useful, hack yourself.
+
+;-)
+
 ## Automatic watermark detection and removal
 This was a project that was built as part of project for CS663 (Digital Image Processing).
 This is a crude Python implementation of the paper "On The Effectiveness Of Visible Watermarks", Tali Dekel, Michael Rubinstein, Ce Liu and William T. Freeman,

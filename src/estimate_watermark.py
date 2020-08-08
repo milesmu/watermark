@@ -25,8 +25,8 @@ def estimate_watermark(foldername):
         for file in files:
             img = cv2.imread(os.sep.join([r, file]))
             if img is not None:
-                # NOTE: image must be same size, specify the (width, height)
-                img = cv2.resize(img, (512,768), interpolation = cv2.INTER_AREA)
+                # TODO: image must be same size, specify the (width, height)
+                # img = cv2.resize(img, (512,768), interpolation = cv2.INTER_AREA)
                 images.append(img)
             else:
                 print("%s not found."%(file))

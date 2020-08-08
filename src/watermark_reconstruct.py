@@ -28,7 +28,7 @@ def get_cropped_images(foldername, num_images, start, end, shape):
         for file in files:
             _img = cv2.imread(os.sep.join([r, file]))
             # TODO: same image size
-            _img = cv2.resize(_img, (512,768), interpolation = cv2.INTER_AREA)
+            # _img = cv2.resize(_img, (512,768), interpolation = cv2.INTER_AREA)
             if _img is not None:
                 # estimate the watermark part
                 image_paths.append(os.sep.join([r, file]))
@@ -170,6 +170,7 @@ def Func_Phi(X, epsilon=1e-3):
 def Func_Phi_deriv(X, epsilon=1e-3):
     return 0.5/Func_Phi(X, epsilon)
 
+# only effective for alpla blended watermark
 def solve_images(J, W_m, alpha, W_init, gamma=1, beta=1, lambda_w=0.005, lambda_i=1, lambda_a=0.01, iters=4):
     '''
     Master solver, follows the algorithm given in the supplementary.
