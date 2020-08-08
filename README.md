@@ -3,7 +3,7 @@
 This is a fork of "automatic-watermark-detection", I fixed the errors for Python3, and clean up the codes.
 
 Note: 
-It only effective for alpla blended watermark, poor with opaque watermark.
+It's effective for alpla blended watermark, but poor with opaque watermark.
 To play with the code, please make sure you have multiple images with same watermark at same position.
 If you still think this is useful, hack yourself.
 
